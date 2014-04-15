@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project name="yeep-basis" basedir="." default="build-jar">
+
+	<property name="lib.dir" value="lib" />
+	<property name="source.dir" value="source" />
+	<property name="meta-info.dir" value="${source.dir}/META-INF" />
+	<property name="jar.name" value="yeepBasis.jar" />
+	<property name="build.dir" value="build" />
+	<property name="build.dist.dir" value="${build.dir}/dist" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="build.classes.meta-info.dir" value="${build.classes.dir}/META-INF" />
+
+	<!-- Build the yeep core -->
+	<target name="build-jar" depends="clean-directory,create-directory,compile" />
+
+	<!-- clean all output files and directories -->
+	<target name="clean" depends="clean-directory" />
+
+	<!-- Compile the source code -->
+	<target name="compile">
+
+		<javac destdir="${build.classes.dir}" excludes="**/**test**.java" target="1.5" debug="true" deprecation="false" optimize="false" failonerror="true">
+			<src path="${source.dir}" />
+		</javac>
+
+		<copy todir="${build.classes.meta-info.dir}" overwrite="true">
+			<fileset dir="${meta-info.dir}" includes="**/*.MF" />
+		</copy>
+
+		<jar jarfile="${build.dist.dir}/${jar.name}" basedir="${build.classes.dir}" manifest="${build.classes.meta-info.dir}/MANIFEST.MF" compress="false">
+		</jar>
+
+	</target>
+
+	<!-- Clean build directory and Output diretory-->
+	<target name="clean-directory">
+		<delete dir="${build.classes.meta-info.dir}" />
+		<delete dir="${build.classes.dir}" />
+		<delete dir="${build.dist.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- Create build directory and Output diretory-->
+	<target name="create-directory">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dist.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<mkdir dir="${build.classes.meta-info.dir}" />
+	</target>
+
+</project>
